@@ -10,6 +10,10 @@
         <h3 class="font-bold text-red-700 mb-3">添加新餐馆</h3>
         <div class="flex gap-2">
           <input type="text" v-model="newRestaurantName" placeholder="输入餐馆名称" class="input flex-grow"/>
+          <select v-model="newRestaurantDrink" class="input flex-grow">
+            <option :value="false">餐馆</option>
+            <option :value="true">饮品店</option>
+          </select>
           <button @click="handleAddRestaurant" class="btn-add">添加</button>
         </div>
       </div>
@@ -54,10 +58,8 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue';
+import type {Restaurant} from "~/types";
 
-// --- 类型定义 ---
-interface Dish { name: string; price: string; }
-interface Restaurant { id: number; name: string; dishes: Dish[]; }
 
 // --- Props & Emits ---
 const props = defineProps<{
@@ -68,9 +70,11 @@ const emit = defineEmits(['addRestaurant', 'deleteRestaurant', 'addDish', 'delet
 
 // --- 组件内部状态 ---
 const newRestaurantName = ref('');
+const newRestaurantDrink = ref(false);
 const newDish = reactive({
   name: '',
   price: '',
+  drink: false,
   restaurantId: '' as '' | number
 });
 
