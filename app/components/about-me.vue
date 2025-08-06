@@ -2,8 +2,13 @@
   <div>
     <section class="bg-white rounded-lg shadow-md p-6">
       <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">
-        <a href="https://github.com/ronger-x/what-to-eat" target="_blank">What to Eat - 决策疲劳终结者</a>
+        What to Eat - 决策疲劳终结者
       </h2>
+      <div class="text-2xl font-bold text-center mb-4">
+        <ULink href="https://github.com/ronger-x/what-to-eat" target="_blank">
+          <UIcon name="i-simple-icons-github" class="size-8 text-gray-900" />
+        </ULink>
+      </div>
       <div class="text-gray-700 leading-relaxed space-y-4">
         <p>
           在食物供给极大丰富的现代社会，“吃什么”这个问题的根源，已不再是资源的匱乏，而是<strong class="font-semibold text-gray-900">认知资源的枯竭</strong>。人类大脑的决策能力是一种有限的、易耗损的资源。每一次选择，无论大小，都在消耗我们的“认知带宽”。当面临“午餐吃什么？”、“晚餐做什么？”这类高频、低价值但选项繁多的决策时，我们实质上是在进行一场认知上的“微支付”，日积月累，导致了严重的<strong
@@ -37,3 +42,5 @@
 <style scoped>
 
 </style>
+<script setup lang="ts">
+</script>

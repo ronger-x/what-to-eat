@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div class="flex gap-4 items-center justify-center flex-wrap mt-4">
+    <div class="flex gap-4 text-gray-700 items-center justify-center flex-wrap mt-4">
       <select v-model="selectedRestaurant" class="input flex-grow">
         <option value="all">
           所有餐馆

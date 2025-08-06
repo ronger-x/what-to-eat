@@ -1,7 +1,7 @@
 <!-- ~/components/MenuManager.vue -->
 <template>
   <details class="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-md">
-    <summary class="p-4 font-bold text-lg cursor-pointer bg-gray-50 select-none hover:bg-gray-100">
+    <summary class="p-4 font-bold text-gray-700 text-lg cursor-pointer bg-gray-50 select-none hover:bg-gray-100">
       餐馆与菜品管理
     </summary>
     <div class="p-6 grid gap-6">
@@ -70,7 +70,7 @@
         <h3 class="font-bold text-red-700 mb-3">
           自定义餐馆和菜品
         </h3>
-        <ul class="space-y-4">
+        <ul class="space-y-4 text-gray-700">
           <li v-for="resto in restaurants" :key="resto.id" class="bg-gray-50 p-3 rounded-md">
             <div class="flex justify-between items-center font-bold">
               <span>{{ resto.name }}</span>
@@ -99,7 +99,7 @@
         <h3 class="font-bold text-red-700 mb-3">
           系统餐馆和菜品
         </h3>
-        <ul class="space-y-4">
+        <ul class="space-y-4 text-gray-700">
           <li v-for="resto in systemRestaurants" :key="resto.id" class="bg-gray-50 p-3 rounded-md">
             <div class="flex justify-between items-center font-bold">
               <span>{{ resto.name }}</span>
