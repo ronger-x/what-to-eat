@@ -68,7 +68,7 @@
       <!-- 已有列表 -->
       <div class="p-4 border rounded-lg">
         <h3 class="font-bold text-red-700 mb-3">
-          已有餐馆和菜品
+          自定义餐馆和菜品
         </h3>
         <ul class="space-y-4">
           <li v-for="resto in restaurants" :key="resto.id" class="bg-gray-50 p-3 rounded-md">
@@ -95,6 +95,29 @@
           </p>
         </ul>
       </div>
+      <div class="p-4 border rounded-lg">
+        <h3 class="font-bold text-red-700 mb-3">
+          系统餐馆和菜品
+        </h3>
+        <ul class="space-y-4">
+          <li v-for="resto in systemRestaurants" :key="resto.id" class="bg-gray-50 p-3 rounded-md">
+            <div class="flex justify-between items-center font-bold">
+              <span>{{ resto.name }}</span>
+            </div>
+            <ul class="pl-5 mt-2 text-sm space-y-1">
+              <li v-for="(dish, index) in resto.dishes" :key="index" class="flex justify-between items-center text-gray-700">
+                <span>{{ dish.name }} - {{ dish.price }}</span>
+              </li>
+              <li v-if="!resto.dishes.length" class="text-gray-400 italic">
+                暂无菜品
+              </li>
+            </ul>
+          </li>
+          <p v-if="!systemRestaurants.length" class="text-gray-500 italic">
+            还没有任何餐馆哦~
+          </p>
+        </ul>
+      </div>
     </div>
   </details>
 </template>
@@ -106,6 +129,7 @@ import type { Restaurant } from '~/types'
 // --- Props & Emits ---
 const props = defineProps<{
   restaurants: Restaurant[]
+  systemRestaurants: Restaurant[]
 }>()
 
 const emit = defineEmits(['addRestaurant', 'deleteRestaurant', 'addDish', 'deleteDish'])

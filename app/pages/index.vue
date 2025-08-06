@@ -4,7 +4,7 @@
     <div class="container max-w-2xl mx-auto grid gap-6">
       <!-- 菜品选择器组件 -->
       <DishSelector
-        :restaurants="restaurants"
+        :restaurants="allRestaurants"
         :selected-dishes="selectedDishes"
         :is-picking="isPicking"
         :animation-pool="animationPool"
@@ -13,12 +13,16 @@
 
       <!-- 菜单管理组件 -->
       <MenuManager
-        :restaurants="restaurants"
+        :restaurants="customRestaurants"
+        :system-restaurants="defaultRestaurants"
         @add-restaurant="addRestaurant"
         @delete-restaurant="deleteRestaurant"
         @add-dish="addDish"
         @delete-dish="deleteDish"
       />
+
+      <!-- 项目介绍组件 -->
+      <AboutMe />
     </div>
   </div>
 </template>
@@ -30,19 +34,20 @@ import type { Dish, Restaurant, SelectedDish } from '~/types'
 import { useMenuData } from '~/composables/useMenuData'
 
 const { data } = useMenuData()
-const defaultData = ref<Restaurant[]>([])
+const defaultRestaurants = ref<Restaurant[]>([])
 if (data) {
-  const { beverage, restaurant } = data
-  beverage.values().forEach((item) => {
-    defaultData.value.push(item)
-  })
-  restaurant.values().forEach((item) => {
-    defaultData.value.push(item)
-  })
+  defaultRestaurants.value = [
+    ...Array.from(data.beverage.values()),
+    ...Array.from(data.restaurant.values())
+  ]
 }
 
 // 使用 @vueuse/core 的 useLocalStorage 实现数据持久化
-const restaurants = useLocalStorage<Restaurant[]>('restaurantData', defaultData)
+const customRestaurants = useLocalStorage<Restaurant[]>('customRestaurantData', [])
+
+const allRestaurants = computed(() => {
+  return [...defaultRestaurants.value, ...customRestaurants.value]
+})
 
 const selectedDishes = ref<SelectedDish[] | null>([])
 const isPicking = ref(false)
@@ -109,9 +114,9 @@ const getMasterDishPool = (restaurantId: 'all' | string, count: number): { name:
   let eligibleRestaurants: Restaurant[] = []
 
   if (restaurantId === 'all') {
-    eligibleRestaurants = restaurants.value.filter(r => r.dishes.length >= count)
+    eligibleRestaurants = allRestaurants.value.filter(r => r.dishes.length >= count)
   } else {
-    const r = restaurants.value.find(r => r.id === restaurantId)
+    const r = allRestaurants.value.find(r => r.id === restaurantId)
     if (r && r.dishes.length >= count) {
       eligibleRestaurants.push(r)
     } else {
@@ -136,7 +141,7 @@ const addRestaurant = (name: string, drink: boolean) => {
     alert('请输入餐馆名称！')
     return
   }
-  restaurants.value.push({
+  customRestaurants.value.push({
     id: Date.now().toString(),
     name: name.trim(),
     drink: drink,
@@ -145,7 +150,7 @@ const addRestaurant = (name: string, drink: boolean) => {
 }
 
 const addDish = (payload: { name: string, price: string, restaurantId: string }) => {
-  const restaurant = restaurants.value.find(r => r.id == payload.restaurantId)
+  const restaurant = customRestaurants.value.find(r => r.id == payload.restaurantId)
   if (restaurant) {
     restaurant.dishes.push({ name: payload.name, price: payload.price })
   }
@@ -153,13 +158,13 @@ const addDish = (payload: { name: string, price: string, restaurantId: string })
 
 const deleteRestaurant = (id: string) => {
   if (confirm('确定要删除整个餐馆及其所有菜品吗？此操作不可撤销！')) {
-    restaurants.value = restaurants.value.filter(r => r.id !== id)
+    customRestaurants.value = customRestaurants.value.filter(r => r.id !== id)
   }
 }
 
 const deleteDish = (payload: { restaurantId: string, dishIndex: number }) => {
   if (confirm('确定要删除这个菜品吗？')) {
-    const restaurant = restaurants.value.find(r => r.id === payload.restaurantId)
+    const restaurant = customRestaurants.value.find(r => r.id === payload.restaurantId)
     if (restaurant) {
       restaurant.dishes.splice(payload.dishIndex, 1)
     }

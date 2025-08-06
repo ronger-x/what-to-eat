@@ -51,13 +51,13 @@
       </select>
       <!-- 新增：推荐数量输入框 -->
       <div class="flex items-center gap-2">
-        <label for="count" class="font-semibold w-12 text-gray-600">数量:</label>
+        <label for="count" class="font-semibold w-16 text-gray-600">数量:</label>
         <input
           id="count"
           v-model.number="countToRecommend"
           type="number"
           min="1"
-          class="input w-20 text-center"
+          class="input w-12 text-center"
         >
       </div>
       <button
@@ -65,7 +65,7 @@
         class="btn-primary w-full md:w-auto flex-grow"
         @click="$emit('pickDish', { restaurantId: selectedRestaurant, count: countToRecommend })"
       >
-        {{ isPicking ? '选择中...' : (selectedDishes ? '再选一次！' : '开始选择') }}
+        {{ isPicking ? '正在决策...' : (selectedDishes && selectedDishes.length ? '再选一次！' : '开始选择') }}
       </button>
     </div>
   </div>
