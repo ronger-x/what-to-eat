@@ -17,8 +17,8 @@ useHead({
   }
 })
 
-const title = '今天吃什么？ - 全能版'
-const description = 'Sparkly is a premium Dashboard Templates built on top of Nuxt UI Pro to create beautiful & responsive Nuxt applications in minutes.'
+const title = 'What to Eat - 决策疲劳终结者'
+const description = '“What to Eat” 项目的核心使命，不是提供更多的选项，而是通过智能化的方式，剥夺用户“无效选择”的权利，从而将他们从决策疲劳的泥潭中解放出来。'
 
 useSeoMeta({
   title,

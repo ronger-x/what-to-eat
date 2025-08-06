@@ -7,49 +7,92 @@
     <div class="p-6 grid gap-6">
       <!-- 添加餐馆 -->
       <div class="p-4 border rounded-lg">
-        <h3 class="font-bold text-red-700 mb-3">添加新餐馆</h3>
+        <h3 class="font-bold text-red-700 mb-3">
+          添加新餐馆
+        </h3>
         <div class="flex gap-2">
-          <input type="text" v-model="newRestaurantName" placeholder="输入餐馆名称" class="input flex-grow"/>
+          <input
+            v-model="newRestaurantName"
+            type="text"
+            placeholder="输入餐馆名称"
+            class="input flex-grow"
+          >
           <select v-model="newRestaurantDrink" class="input flex-grow">
-            <option :value="false">餐馆</option>
-            <option :value="true">饮品店</option>
+            <option :value="false">
+              餐馆
+            </option>
+            <option :value="true">
+              饮品店
+            </option>
           </select>
-          <button @click="handleAddRestaurant" class="btn-add">添加</button>
+          <button class="btn-add" @click="handleAddRestaurant">
+            添加
+          </button>
         </div>
       </div>
 
       <!-- 添加菜品 -->
       <div class="p-4 border rounded-lg">
-        <h3 class="font-bold text-red-700 mb-3">添加新菜品</h3>
+        <h3 class="font-bold text-red-700 mb-3">
+          添加新菜品
+        </h3>
         <div class="grid gap-4">
-          <input type="text" v-model="newDish.name" placeholder="菜名" class="input" :disabled="!canAddDish" />
-          <input type="text" v-model="newDish.price" placeholder="价格, 如: 20元" class="input" :disabled="!canAddDish" />
+          <input
+            v-model="newDish.name"
+            type="text"
+            placeholder="菜名"
+            class="input"
+            :disabled="!canAddDish"
+          >
+          <input
+            v-model="newDish.price"
+            type="text"
+            placeholder="价格, 如: 20元"
+            class="input"
+            :disabled="!canAddDish"
+          >
           <select v-model="newDish.restaurantId" class="input" :disabled="!canAddDish">
-            <option disabled value="">选择归属餐馆</option>
-            <option v-for="r in restaurants" :key="r.id" :value="r.id">{{ r.name }}</option>
+            <option disabled value="">
+              选择归属餐馆
+            </option>
+            <option v-for="r in restaurants" :key="r.id" :value="r.id">
+              {{ r.name }}
+            </option>
           </select>
-          <button @click="handleAddDish" class="btn-add w-full" :disabled="!canAddDish">添加菜品</button>
+          <button class="btn-add w-full" :disabled="!canAddDish" @click="handleAddDish">
+            添加菜品
+          </button>
         </div>
       </div>
 
       <!-- 已有列表 -->
       <div class="p-4 border rounded-lg">
-        <h3 class="font-bold text-red-700 mb-3">已有餐馆和菜品</h3>
+        <h3 class="font-bold text-red-700 mb-3">
+          已有餐馆和菜品
+        </h3>
         <ul class="space-y-4">
           <li v-for="resto in restaurants" :key="resto.id" class="bg-gray-50 p-3 rounded-md">
             <div class="flex justify-between items-center font-bold">
               <span>{{ resto.name }}</span>
-              <button @click="$emit('deleteRestaurant', resto.id)" class="btn-delete">删除餐馆</button>
+              <button class="btn-delete" @click="$emit('deleteRestaurant', resto.id)">
+                删除餐馆
+              </button>
             </div>
             <ul class="pl-5 mt-2 text-sm space-y-1">
               <li v-for="(dish, index) in resto.dishes" :key="index" class="flex justify-between items-center text-gray-700">
                 <span>{{ dish.name }} - {{ dish.price }}</span>
-                <button @click="$emit('deleteDish', { restaurantId: resto.id, dishIndex: index })" class="btn-delete">删除</button>
+                <button class="btn-delete" @click="$emit('deleteDish', { restaurantId: resto.id, dishIndex: index })">
+                  删除
+                </button>
               </li>
-              <li v-if="!resto.dishes.length" class="text-gray-400 italic">暂无菜品</li>
+              <li v-if="!resto.dishes.length" class="text-gray-400 italic">
+                暂无菜品
+              </li>
             </ul>
           </li>
-          <p v-if="!restaurants.length" class="text-gray-500 italic">还没有任何餐馆哦~</p>
+          <p v-if="!restaurants.length" class="text-gray-500 italic">
+            还没有任何餐馆哦~
+          </p>
         </ul>
       </div>
     </div>
@@ -57,57 +100,56 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from 'vue';
-import type {Restaurant} from "~/types";
-
+import { ref, reactive, computed, watch } from 'vue'
+import type { Restaurant } from '~/types'
 
 // --- Props & Emits ---
 const props = defineProps<{
   restaurants: Restaurant[]
-}>();
+}>()
 
-const emit = defineEmits(['addRestaurant', 'deleteRestaurant', 'addDish', 'deleteDish']);
+const emit = defineEmits(['addRestaurant', 'deleteRestaurant', 'addDish', 'deleteDish'])
 
 // --- 组件内部状态 ---
-const newRestaurantName = ref('');
-const newRestaurantDrink = ref(false);
+const newRestaurantName = ref('')
+const newRestaurantDrink = ref(false)
 const newDish = reactive({
   name: '',
   price: '',
   drink: false,
   restaurantId: '' as '' | number
-});
+})
 
 // --- 计算属性 ---
-const canAddDish = computed(() => props.restaurants.length > 0);
+const canAddDish = computed(() => props.restaurants.length > 0)
 
 // --- 监听器 ---
 // 如果没有餐厅，则清空添加菜品表单的 restaurantId
 watch(canAddDish, (can) => {
   if (!can) {
-    newDish.restaurantId = '';
+    newDish.restaurantId = ''
   }
-});
+})
 
 // --- 事件处理函数 ---
 const handleAddRestaurant = () => {
-  emit('addRestaurant', newRestaurantName.value);
-  newRestaurantName.value = ''; // 清空输入
-};
+  emit('addRestaurant', newRestaurantName.value)
+  newRestaurantName.value = '' // 清空输入
+}
 
 const handleAddDish = () => {
   if (!newDish.name.trim() || !newDish.price.trim() || !newDish.restaurantId) {
-    alert('请填写完整的菜品信息！');
-    return;
+    alert('请填写完整的菜品信息！')
+    return
   }
   emit('addDish', {
     ...newDish,
     restaurantId: Number(newDish.restaurantId)
-  });
+  })
   // 清空表单
-  newDish.name = '';
-  newDish.price = '';
-};
+  newDish.name = ''
+  newDish.price = ''
+}
 </script>
 
 <style scoped>
