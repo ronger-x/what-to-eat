@@ -50,7 +50,6 @@ const animationPool = ref<SelectedDish[] | null>([]) // 新增：用于动画的
 
 // --- 页面头部信息 ---
 useHead({
-  title: '今天吃什么？- 全能版',
   link: [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap' }
